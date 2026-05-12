@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vendor Mart — Coming Soon</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0a0a08;
+      --surface: #111110;
+      --border: #1f1f1c;
+      --accent: #f0c040;
+      --accent2: #e87c3e;
+      --text: #f0ede6;
+      --muted: #6b6960;
+      --faint: #2a2a26;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Animated noise grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.35;
+    }
+
+    /* Background grid */
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+    }
+
+    /* Glowing blobs */
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .blob-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(240,192,64,0.12) 0%, transparent 70%);
+      top: -150px; left: -100px;
+      animation: drift1 12s ease-in-out infinite alternate;
+    }
+    .blob-2 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(232,124,62,0.10) 0%, transparent 70%);
+      bottom: -100px; right: -80px;
+      animation: drift2 14s ease-in-out infinite alternate;
+    }
+
+    @keyframes drift1 { from { transform: translate(0,0) scale(1); } to { transform: translate(60px, 40px) scale(1.1); } }
+    @keyframes drift2 { from { transform: translate(0,0) scale(1); } to { transform: translate(-50px, -60px) scale(1.08); } }
+
+    /* Main layout */
+    .container {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      padding: clamp(24px, 5vw, 60px);
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 40px;
+      border-bottom: 1px solid var(--border);
+      animation: fadeDown 0.8s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo-mark {
+      width: 38px; height: 38px;
+      background: var(--accent);
+      display: grid;
+      place-items: center;
+      clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%);
+    }
+    .logo-mark svg { width: 20px; height: 20px; color: var(--bg); }
+    .logo-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 0.08em;
+      color: var(--text);
+    }
+    .logo-name span { color: var(--accent); }
+
+    .status-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: var(--faint);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .status-dot {
+      width: 7px; height: 7px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--accent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    /* Hero */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 0;
+      padding: 80px 0 60px;
+      max-width: 900px;
+    }
+
+    .eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+      animation: fadeUp 0.8s 0.1s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    .headline {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4.5rem, 12vw, 10rem);
+      line-height: 0.9;
+      letter-spacing: 0.02em;
+      color: var(--text);
+      animation: fadeUp 0.9s 0.2s cubic-bezier(0.16,1,0.3,1) both;
+    }
+    .headline .line-accent {
+      color: transparent;
+      -webkit-text-stroke: 1.5px var(--accent);
+    }
+    .headline .line-highlight {
+      position: relative;
+      display: inline-block;
+    }
+    .headline .line-highlight::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: 8px;
+      width: 100%;
+      height: 6px;
+      background: var(--accent2);
+      opacity: 0.6;
+      z-index: -1;
+      animation: slideIn 0.7s 0.9s cubic-bezier(0.16,1,0.3,1) both;
+      transform-origin: left;
+    }
+    @keyframes slideIn { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+    .subline {
+      margin-top: 32px;
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 520px;
+      animation: fadeUp 0.9s 0.35s cubic-bezier(0.16,1,0.3,1) both;
+    }
+    .subline strong { color: var(--text); font-weight: 400; }
+
+    /* Launch badge */
+    .launch-badge {
+      margin-top: 52px;
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 28px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      animation: fadeUp 0.9s 0.45s cubic-bezier(0.16,1,0.3,1) both;
+    }
+    .launch-badge::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+    .launch-badge-icon {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.2rem;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .launch-badge-text {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .launch-badge-text .top {
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .launch-badge-text .bottom {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: 0.06em;
+      color: var(--text);
+    }
+
+    /* kept for responsive media query reference */
+    .cd-lbl {
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+    }
+
+    .notify-fields {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      max-width: 480px;
+    }
+    .notify-fields .notify-input:first-child {
+      border-bottom: none;
+      border-right: 1px solid var(--border);
+    }
+
+    /* Notify form */
+    .notify-wrap {
+      margin-top: 48px;
+      animation: fadeUp 0.9s 0.55s cubic-bezier(0.16,1,0.3,1) both;
+    }
+    .notify-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .notify-row {
+      display: flex;
+      gap: 0;
+      max-width: 480px;
+    }
+    .notify-input {
+      flex: 1;
+      padding: 14px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-right: none;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .notify-input::placeholder { color: var(--muted); }
+    .notify-input:focus { border-color: var(--accent); }
+    .notify-input.error { border-color: #e05454; }
+    .notify-btn {
+      padding: 14px 24px;
+      background: var(--accent);
+      border: 1px solid var(--accent);
+      color: var(--bg);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.12em;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s, opacity 0.2s;
+      white-space: nowrap;
+      min-width: 130px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .notify-btn:hover:not(:disabled) { background: #f5d06a; }
+    .notify-btn:active:not(:disabled) { transform: scale(0.98); }
+    .notify-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-spinner {
+      width: 14px; height: 14px;
+      border: 2px solid rgba(0,0,0,0.25);
+      border-top-color: var(--bg);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+    .notify-btn.loading .btn-spinner { display: block; }
+    .notify-btn.loading .btn-text { display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .recap-wrap {
+      margin-top: 14px;
+      max-width: 480px;
+    }
+    .recap-err {
+      font-size: 0.72rem;
+      color: #e05454;
+      margin-top: 6px;
+      visibility: hidden;
+    }
+
+    .form-feedback {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.85rem;
+      margin-top: 12px;
+    }
+    .form-feedback.success { display: flex; color: var(--accent); }
+    .form-feedback.error-msg { display: flex; color: #e05454; }
+
+    .success-msg {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      color: var(--accent);
+      font-size: 0.88rem;
+      margin-top: 14px;
+    }
+    .success-msg.show { display: flex; }
+
+    /* Feature pills */
+    .features {
+      margin-top: 60px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      animation: fadeUp 0.9s 0.65s cubic-bezier(0.16,1,0.3,1) both;
+    }
+    .feat-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: var(--faint);
+      border: 1px solid var(--border);
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .feat-pill:hover { border-color: var(--accent); color: var(--text); }
+    .feat-pill .dot { width: 5px; height: 5px; background: var(--accent2); border-radius: 50%; }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding-top: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: gap;
+      gap: 16px;
+      animation: fadeUp 0.9s 0.75s cubic-bezier(0.16,1,0.3,1) both;
+    }
+    .footer-copy {
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+    .footer-links a {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--accent); }
+
+    /* Side decoration */
+    .side-tag {
+      position: fixed;
+      right: -38px;
+      top: 50%;
+      transform: translateY(-50%) rotate(90deg);
+      font-size: 0.6rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--faint);
+      z-index: 10;
+      white-space: nowrap;
+    }
+
+    /* Floating market icons */
+    .float-icons {
+      position: fixed;
+      top: 0; right: 0;
+      width: 420px; height: 420px;
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0.04;
+    }
+    .float-icons svg { width: 100%; height: 100%; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .status-pill span { display: none; }
+      .footer-links { display: none; }
+      .notify-row { flex-direction: column; }
+      .notify-input { border-right: 1px solid var(--border); border-bottom: none; }
+      .side-tag { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-grid"></div>
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="side-tag">Vendor Mart © 2025 — Coming Soon</div>
+
+  <!-- Decorative corner art -->
+  <div class="float-icons">
+    <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="320" cy="80" r="160" stroke="white" stroke-width="0.5"/>
+      <circle cx="320" cy="80" r="100" stroke="white" stroke-width="0.5"/>
+      <circle cx="320" cy="80" r="50" stroke="white" stroke-width="0.5"/>
+      <line x1="0" y1="0" x2="400" y2="400" stroke="white" stroke-width="0.5"/>
+      <line x1="400" y1="0" x2="0" y2="400" stroke="white" stroke-width="0.3"/>
+    </svg>
+  </div>
+
+  <div class="container">
+
+    <!-- Header -->
+    <header>
+      <div class="logo">
+        <div class="logo-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
+        </div>
+        <span class="logo-name">VENDOR<span>MART</span></span>
+      </div>
+      <div class="status-pill">
+        <div class="status-dot"></div>
+        <span>In Development</span>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <main>
+      <div class="hero">
+        <div class="eyebrow">The Future of Vendor Commerce</div>
+
+        <h1 class="headline">
+          YOUR<br>
+          <span class="line-accent">MARKET.</span><br>
+          <span class="line-highlight">UNLEASHED.</span>
+        </h1>
+
+        <p class="subline">
+          A <strong>next-generation marketplace</strong> where vendors scale faster,
+          buyers discover smarter, and commerce flows without friction.
+          We're building something extraordinary — and it's almost ready.
+        </p>
+
+        <!-- Launch badge -->
+        <div class="launch-badge">
+          <div class="launch-badge-icon">🚀</div>
+          <div class="launch-badge-text">
+            <span class="top">Status</span>
+            <span class="bottom">Launching Soon — Date TBA</span>
+          </div>
+        </div>
+
+        <!-- Early Access — Zoho Web Form (live) -->
+        <div class="notify-wrap">
+          <div class="notify-label">Get Early Access</div>
+
+          <form id="webform6708968000003386673" name="WebForm6708968000003386673" accept-charset="UTF-8" novalidate>
+            <!-- Zoho hidden auth fields — do not remove -->
+            <input type="text" style="display:none;" name="xnQsjsdp" value="bf9da1c69833ea8b9c535de5ee7e2931c6661c22148d30a77814c3de3b20bed0">
+            <input type="hidden" name="zc_gad" id="zc_gad" value="">
+            <input type="text" style="display:none;" name="xmIwtLD" value="43b85f2ef05966ca45bbcdb75ccd3c9a364865a91405840560be745ca9e195664ccd643f683fe71aaccfe63ed46488e6">
+            <input type="text" style="display:none;" name="actionType" value="Q3VzdG9tTW9kdWxlMTQ=">
+            <input type="text" style="display:none;" name="returnURL" value="null">
+            <input type="text" style="display:none;" name="aG9uZXlwb3Q" value="">
+
+            <div class="notify-fields">
+              <input class="notify-input" type="text" id="NAME" name="NAME" placeholder="Your name" maxlength="120" autocomplete="name" required />
+              <div class="notify-row">
+                <input class="notify-input" type="email" ftype="email" id="Email" name="Email" placeholder="your@email.com" maxlength="100" autocomplete="email" />
+                <button type="submit" class="notify-btn" id="notify-btn">
+                  <span class="btn-text">NOTIFY ME</span>
+                  <div class="btn-spinner"></div>
+                </button>
+              </div>
+            </div>
+
+            <!-- reCAPTCHA -->
+            <div class="recap-wrap">
+              <div class="g-recaptcha"
+                data-sitekey="6Le1EeYsAAAAAMAbEKnr999Tql5jdh2qucGKattj"
+                data-theme="dark"
+                data-callback="rccallback6708968000003386673"
+                captcha-verified="false"
+                id="recap6708968000003386673">
+              </div>
+              <div id="recapErr6708968000003386673" class="recap-err">Captcha validation failed. Please try again.</div>
+            </div>
+
+          </form>
+
+          <div class="form-feedback success" id="success-msg">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            You're on the list! We'll reach out when we launch.
+          </div>
+          <div class="form-feedback error-msg" id="error-msg">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span id="error-text">Something went wrong. Please try again.</span>
+          </div>
+        </div>
+
+        <!-- Features -->
+        <div class="features">
+          <div class="feat-pill"><span class="dot"></span> Smart Vendor Dashboard</div>
+          <div class="feat-pill"><span class="dot"></span> Instant Payouts</div>
+          <div class="feat-pill"><span class="dot"></span> AI Product Discovery</div>
+          <div class="feat-pill"><span class="dot"></span> Multi-Vendor Storefront</div>
+          <div class="feat-pill"><span class="dot"></span> Analytics & Insights</div>
+          <div class="feat-pill"><span class="dot"></span> Zero Setup Fees</div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <span class="footer-copy">© 2025 VendorMart. All rights reserved.</span>
+      <nav class="footer-links">
+        <a href="#">Twitter</a>
+        <a href="#">Instagram</a>
+        <a href="#">Contact</a>
+      </nav>
+    </footer>
+
+  </div>
+
+  <!-- Zoho required scripts -->
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+  <!-- Zoho Analytics — do not remove -->
+  <script id="wf_anal" src="https://crm.zohopublic.com/crm/WebFormAnalyticsServeServlet?rid=e9cb66628b6fa35f48397a37f8892551944049259a6b4f90b8198d85de4c4714f4c6ec1e4ee2d71dbe1b57ece0515e65gid345f4332655f7d3b4d19652655c511d143d2ec55153175386c4a30d7ab2abe42gid1b44c3800d551327bacfb3625468ffbf06d6201cda7701cb2fa1a4db8ecb338fgidc47ce5ca2743217c8b1bf178775926b1f7eb62500bcee6197e035e7281ffe66e&tw=adccce2b376333c518104a836ce09ef2471112b553390f74ef0d8d10500e5ddf"></script>
+
+  <script>
+    /* ── reCAPTCHA callbacks (required by Zoho) ── */
+    function rccallback6708968000003386673() {
+      var el = document.getElementById('recap6708968000003386673');
+      if (el) el.setAttribute('captcha-verified', 'true');
+      var err = document.getElementById('recapErr6708968000003386673');
+      if (err && err.style.visibility === 'visible') err.style.visibility = 'hidden';
+    }
+    function reCaptchaAlert6708968000003386673() {
+      var recap = document.getElementById('recap6708968000003386673');
+      if (recap && recap.getAttribute('captcha-verified') === 'false') {
+        document.getElementById('recapErr6708968000003386673').style.visibility = 'visible';
+        return false;
+      }
+      return true;
+    }
+
+    /* ── Email validation ── */
+    function validateEmail6708968000003386673() {
+      var form  = document.forms['WebForm6708968000003386673'];
+      var flds  = form.querySelectorAll('[ftype=email]');
+      for (var i = 0; i < flds.length; i++) {
+        var v = flds[i].value.trim();
+        if (v.length) {
+          var at  = v.indexOf('@');
+          var dot = v.lastIndexOf('.');
+          if (at < 1 || dot < at + 2 || dot + 2 >= v.length) {
+            document.getElementById('Email').classList.add('error');
+            document.getElementById('error-text').textContent = 'Please enter a valid email address.';
+            document.getElementById('error-msg').style.display = 'flex';
+            flds[i].focus();
+            return false;
+          }
+        }
+      }
+      return true;
+    }
+
+    /* ── Mandatory field check ── */
+    function checkMandatory6708968000003386673() {
+      var required  = ['NAME'];
+      var labels    = ['Name'];
+      var form      = document.forms['WebForm6708968000003386673'];
+      for (var i = 0; i < required.length; i++) {
+        var fld = form[required[i]];
+        if (fld && fld.value.trim().length === 0) {
+          fld.classList.add('error');
+          document.getElementById('error-text').textContent = labels[i] + ' cannot be empty.';
+          document.getElementById('error-msg').style.display = 'flex';
+          fld.focus();
+          return false;
+        }
+      }
+      if (!validateEmail6708968000003386673()) return false;
+      if (!reCaptchaAlert6708968000003386673()) return false;
+      document.querySelector('#webform6708968000003386673 .notify-btn').setAttribute('disabled', true);
+      return true;
+    }
+
+    /* ── UI helpers ── */
+    function setLoading(on) {
+      var btn = document.getElementById('notify-btn');
+      btn.disabled = on;
+      btn.classList.toggle('loading', on);
+    }
+    function showSuccess() {
+      document.getElementById('webform6708968000003386673').style.display = 'none';
+      document.getElementById('success-msg').style.display = 'flex';
+      document.getElementById('error-msg').style.display = 'none';
+    }
+
+    /* ── Form submission via Zoho AJAX ── */
+    $(document).ready(function () {
+      $('#webform6708968000003386673').submit(function (e) {
+        e.preventDefault();
+        // Clear previous errors
+        document.getElementById('error-msg').style.display = 'none';
+        document.querySelectorAll('.notify-input').forEach(function(el){ el.classList.remove('error'); });
+
+        var ok = checkMandatory6708968000003386673();
+        if (!ok) {
+          document.querySelector('#webform6708968000003386673 .notify-btn').removeAttribute('disabled');
+          return;
+        }
+
+        setLoading(true);
+
+        var formData = new FormData(this);
+
+        $.ajax({
+          url: 'https://crm.zoho.com/crm/WebForm',
+          type: 'POST',
+          data: formData,
+          cache: false,
+          contentType: false,
+          processData: false,
+          success: function (data) {
+            showSuccess();
+            setLoading(false);
+          },
+          error: function () {
+            document.getElementById('error-text').textContent = 'Submission failed. Please try again.';
+            document.getElementById('error-msg').style.display = 'flex';
+            document.querySelector('#webform6708968000003386673 .notify-btn').removeAttribute('disabled');
+            setLoading(false);
+          }
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
