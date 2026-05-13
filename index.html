@@ -4,225 +4,184 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Vendor Mart — Coming Soon</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%230a0a08'/%3E%3Cpath d='M18 20 14 28v22a3 3 0 0 0 3 3h30a3 3 0 0 0 3-3V28l-4-8Z' fill='none' stroke='%23f0c040' stroke-width='2.5' stroke-linejoin='round'/%3E%3Cline x1='14' y1='28' x2='50' y2='28' stroke='%23f0c040' stroke-width='2.5'/%3E%3Cpath d='M27 22c0-2.76 2.24-5 5-5s5 2.24 5 5' fill='none' stroke='%23f0c040' stroke-width='2.5' stroke-linecap='round'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Georgia,serif' font-size='14' font-weight='bold' fill='%23f0c040'%3E%3F%3C/text%3E%3C/svg%3E"/>
 
   <style>
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-
     :root {
-      --bg:      #0a0a08;
+      --bg: #0a0a08;
       --surface: #111110;
-      --border:  #222220;
-      --accent:  #f0c040;
+      --border: #222220;
+      --accent: #f0c040;
       --accent2: #e87c3e;
-      --text:    #f0ede6;
-      --muted:   #6b6960;
-      --faint:   #1a1a17;
+      --text: #f0ede6;
+      --muted: #6b6960;
+      --faint: #161614;
     }
-
     html, body {
-      width:100%; height:100%;
+      width:100%; min-height:100svh;
       overflow:hidden;
       background:var(--bg);
       color:var(--text);
-      font-family:'DM Sans',sans-serif;
+      font-family:'DM Sans', sans-serif;
     }
 
-    /* grain overlay */
+    /* Background elements - made lighter */
     body::before {
       content:''; position:fixed; inset:0; z-index:999; pointer-events:none;
-      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-      opacity:.3;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity:.18;
     }
-
-    /* grid */
     .bg-grid {
       position:fixed; inset:0; z-index:0;
       background-image:
         linear-gradient(var(--border) 1px, transparent 1px),
         linear-gradient(90deg, var(--border) 1px, transparent 1px);
-      background-size:54px 54px;
-      mask-image:radial-gradient(ellipse 90% 90% at 50% 50%, black 10%, transparent 100%);
+      background-size:60px 60px;
+      mask-image:radial-gradient(ellipse 75% 75% at 50% 50%, black 0%, transparent 100%);
     }
-
-    /* blobs */
-    .blob { position:fixed; border-radius:50%; filter:blur(100px); pointer-events:none; z-index:0; }
+    .blob { position:fixed; border-radius:50%; filter:blur(110px); pointer-events:none; z-index:0; opacity:0.7; }
     .blob-1 {
-      width:500px; height:500px;
-      background:radial-gradient(circle, rgba(240,192,64,.11) 0%, transparent 70%);
-      top:-150px; left:-90px;
-      animation:d1 13s ease-in-out infinite alternate;
+      width:550px; height:550px;
+      background:radial-gradient(circle, rgba(240,192,64,.08) 0%, transparent 70%);
+      top:-180px; left:-120px;
     }
     .blob-2 {
-      width:380px; height:380px;
-      background:radial-gradient(circle, rgba(232,124,62,.09) 0%, transparent 70%);
-      bottom:-70px; right:-50px;
-      animation:d2 15s ease-in-out infinite alternate;
-    }
-    @keyframes d1 { to { transform:translate(50px,38px) scale(1.07); } }
-    @keyframes d2 { to { transform:translate(-42px,-52px) scale(1.05); } }
-
-    /* deco rings */
-    .deco-ring {
-      position:fixed; top:-80px; right:-80px; z-index:1;
-      pointer-events:none; opacity:.03;
-      width:480px; height:480px;
+      width:420px; height:420px;
+      background:radial-gradient(circle, rgba(232,124,62,.06) 0%, transparent 70%);
+      bottom:-80px; right:-60px;
     }
 
-    /* side tag */
-    .side-tag {
-      position:fixed; right:-32px; top:50%;
-      transform:translateY(-50%) rotate(90deg);
-      font-size:.52rem; letter-spacing:.3em; text-transform:uppercase;
-      color:var(--border); z-index:10; white-space:nowrap;
-    }
-
-    /* ══════════════════════
-       PAGE — strict 100vh
-    ══════════════════════ */
     .page {
       position:relative; z-index:10;
-      width:100vw; height:100vh;
+      width:min(100%, 1280px); height:100svh;
+      margin:0 auto;
       display:grid;
       grid-template-rows:auto 1fr auto;
-      padding:clamp(10px,1.8vh,26px) clamp(16px,4vw,52px);
+      padding:clamp(16px,2.2vh,32px) clamp(20px,4.5vw,60px);
+      gap:clamp(12px,1.8vh,24px);
     }
 
     /* HEADER */
     header {
       display:flex; align-items:center; justify-content:space-between;
-      padding-bottom:clamp(8px,1.3vh,16px);
+      padding-bottom:clamp(10px,1.5vh,20px);
       border-bottom:1px solid var(--border);
-      animation:fD .65s cubic-bezier(.16,1,.3,1) both;
     }
-    .logo { display:flex; align-items:center; gap:9px; }
-    .logo-mark {
-      width:30px; height:30px; background:var(--accent);
-      display:grid; place-items:center;
-      clip-path:polygon(20% 0%,80% 0%,100% 20%,100% 80%,80% 100%,20% 100%,0% 80%,0% 20%);
+    .logo {
+      display:flex; align-items:center; gap:11px;
+      text-decoration:none;
     }
-    .logo-mark svg { width:15px; height:15px; color:var(--bg); }
-    .logo-name {
-      font-family:'Bebas Neue',sans-serif;
-      font-size:clamp(1.15rem,1.9vw,1.5rem);
-      letter-spacing:.08em;
+    .logo-mark { width:36px; height:36px; flex-shrink:0; }
+    .logo-wordmark .wm-top {
+      font-family:'Bebas Neue', sans-serif;
+      font-size:clamp(1.1rem,1.8vw,1.4rem);
+      letter-spacing:.12em;
     }
-    .logo-name span { color:var(--accent); }
+    .logo-wordmark .wm-top span { color:var(--accent); }
+    .logo-wordmark .wm-sub {
+      font-size:.55rem; letter-spacing:.22em; text-transform:uppercase;
+      color:var(--muted);
+    }
     .pill {
-      display:flex; align-items:center; gap:6px;
-      padding:4px 12px; border-radius:100px;
+      display:flex; align-items:center; gap:7px;
+      padding:5px 14px; border-radius:100px;
       background:var(--faint); border:1px solid var(--border);
-      font-size:.6rem; font-weight:500; letter-spacing:.12em;
+      font-size:.58rem; font-weight:500; letter-spacing:.14em;
       text-transform:uppercase; color:var(--muted);
     }
     .pill-dot {
       width:6px; height:6px; background:var(--accent); border-radius:50%;
-      box-shadow:0 0 6px var(--accent);
-      animation:pulse 2s ease-in-out infinite;
+      box-shadow:0 0 8px var(--accent);
+      animation:pulse 2.2s ease-in-out infinite;
     }
-    @keyframes pulse { 50% { opacity:.35; transform:scale(.7); } }
+    @keyframes pulse { 50% { opacity:.3; transform:scale(.65); } }
 
-    /* MAIN — two columns, fills remaining height */
+    /* MAIN */
     main {
       display:grid;
-      grid-template-columns:1fr clamp(255px,24vw,330px);
+      grid-template-columns:minmax(0,1fr) minmax(270px, 360px);
       align-items:center;
-      gap:clamp(18px,3vw,52px);
-      padding:clamp(4px,.8vh,10px) 0;
-      min-height:0;
-      overflow:hidden;
+      gap:clamp(32px,5vw,80px);
     }
 
-    /* LEFT */
-    .hero-left { display:flex; flex-direction:column; min-width:0; }
+    .hero-left {
+      display:flex; flex-direction:column;
+      justify-content:center;
+    }
 
     .eyebrow {
-      font-size:.6rem; font-weight:500; letter-spacing:.24em;
+      font-size:.65rem; font-weight:500; letter-spacing:.28em;
       text-transform:uppercase; color:var(--accent);
-      margin-bottom:clamp(4px,.8vh,10px);
-      animation:fU .7s .08s cubic-bezier(.16,1,.3,1) both;
+      margin-bottom:12px;
     }
-    .headline {
-      font-family:'Bebas Neue',sans-serif;
-      font-size:clamp(2.6rem,6.2vw,6rem);
-      line-height:.88; letter-spacing:.02em;
-      animation:fU .75s .14s cubic-bezier(.16,1,.3,1) both;
+
+    .coming-soon {
+      font-family:'Bebas Neue', sans-serif;
+      font-size:clamp(4.8rem, 13vw, 11.5rem);
+      line-height:.78;
+      letter-spacing:-0.02em;
+      font-weight:700;
+      margin-bottom:8px;
     }
-    .ln-stroke { color:transparent; -webkit-text-stroke:1.5px var(--accent); }
-    .ln-hl { position:relative; display:inline-block; }
-    .ln-hl::after {
-      content:''; position:absolute; left:0; bottom:4px;
-      width:100%; height:5px; background:var(--accent2); opacity:.5; z-index:-1;
-      transform:scaleX(0); transform-origin:left;
-      animation:sI .6s .8s cubic-bezier(.16,1,.3,1) forwards;
+
+    .tagline {
+      font-family:'Bebas Neue', sans-serif;
+      font-size:clamp(1.8rem, 4.5vw, 3.2rem);
+      line-height:1;
+      color:var(--accent);
+      margin-bottom:clamp(16px,2.5vh,28px);
     }
-    @keyframes sI { to { transform:scaleX(1); } }
 
     .subline {
-      margin-top:clamp(5px,.9vh,12px);
-      font-size:clamp(.72rem,1vw,.9rem);
-      font-weight:300; color:var(--muted); line-height:1.6; max-width:400px;
-      animation:fU .75s .2s cubic-bezier(.16,1,.3,1) both;
+      font-size:clamp(.9rem,1.2vw,1.05rem);
+      font-weight:300; color:var(--muted); line-height:1.65;
+      max-width:38ch;
     }
-    .subline strong { color:var(--text); font-weight:400; }
 
-    .launch-badge {
-      margin-top:clamp(5px,.9vh,12px);
-      display:inline-flex; align-items:center; gap:10px;
-      padding:7px 14px;
+    /* Status */
+    .status-badge {
+      margin-top:clamp(24px,3vh,40px);
+      display:inline-flex; align-items:center; gap:12px;
+      padding:10px 20px;
       background:var(--faint); border:1px solid var(--border);
-      position:relative; overflow:hidden;
-      animation:fU .75s .26s cubic-bezier(.16,1,.3,1) both;
+      width:fit-content;
     }
-    .launch-badge::before {
-      content:''; position:absolute; top:0; left:0; right:0; height:1px;
-      background:linear-gradient(90deg,transparent,var(--accent),transparent);
+    .status-badge .sb-text .btm {
+      font-family:'Bebas Neue', sans-serif;
+      font-size:1.15rem; letter-spacing:.05em; color:var(--text);
     }
-    .lb-icon { font-size:1.1rem; line-height:1; }
-    .lb-text .top { font-size:.52rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); display:block; }
-    .lb-text .btm { font-family:'Bebas Neue',sans-serif; font-size:.95rem; letter-spacing:.06em; color:var(--text); }
 
-    .features {
-      margin-top:clamp(5px,.9vh,12px);
-      display:flex; flex-wrap:wrap; gap:5px;
-      animation:fU .75s .32s cubic-bezier(.16,1,.3,1) both;
-    }
-    .fp {
-      display:flex; align-items:center; gap:5px;
-      padding:3px 10px;
-      background:var(--faint); border:1px solid var(--border);
-      font-size:.62rem; color:var(--muted);
-      transition:border-color .2s,color .2s; cursor:default;
-    }
-    .fp:hover { border-color:var(--accent); color:var(--text); }
-    .fp-dot { width:4px; height:4px; background:var(--accent2); border-radius:50%; flex-shrink:0; }
-
-    /* RIGHT — form panel */
+    /* FORM PANEL */
     .form-panel {
       background:var(--surface);
       border:1px solid var(--border);
-      padding:clamp(14px,1.8vw,22px);
-      position:relative;
-      animation:fU .75s .3s cubic-bezier(.16,1,.3,1) both;
+      padding:clamp(24px,3vw,32px);
       align-self:center;
+      width:100%;
+      max-width:360px;
+      justify-self:end;
     }
     .form-panel::before {
-      content:''; position:absolute; top:0; left:0; right:0; height:2px;
+      content:''; position:absolute; top:0; left:0; right:0; height:3px;
       background:linear-gradient(90deg,var(--accent2),var(--accent));
     }
     .form-panel-title {
-      font-family:'Bebas Neue',sans-serif;
-      font-size:1.2rem; letter-spacing:.08em; margin-bottom:2px;
+      font-family:'Bebas Neue', sans-serif;
+      font-size:1.45rem; letter-spacing:.06em;
+      margin-bottom:4px;
     }
     .form-panel-sub {
-      font-size:.64rem; color:var(--muted); line-height:1.45;
-      margin-bottom:clamp(8px,1vh,14px);
+      font-size:.68rem; color:var(--muted); line-height:1.5;
+      margin-bottom:20px;
     }
 
-    /* ── Zoho embed dark-theme overrides ── */
+    /* Zoho Form Overrides */
     #crmWebToEntityForm {
       background:transparent !important;
-      color:var(--text) !important;
       max-width:100% !important;
       padding:0 !important;
     }
@@ -230,217 +189,130 @@
       font-family:'DM Sans',sans-serif !important;
       color:var(--text) !important;
     }
-    /* hide Zoho's own title */
     #crmWebToEntityForm .zcwf_title { display:none !important; }
-
-    /* labels */
     #crmWebToEntityForm .zcwf_col_lab {
-      width:100% !important; float:none !important;
-      font-size:.6rem !important; font-weight:500 !important;
+      font-size:.58rem !important; font-weight:500 !important;
       letter-spacing:.1em !important; text-transform:uppercase !important;
       color:var(--muted) !important;
-      padding:0 0 4px !important; margin:0 !important; min-height:unset !important;
+      padding:0 0 6px !important;
     }
-    #crmWebToEntityForm .zcwf_col_lab label { color:var(--muted) !important; }
-
-    /* field columns */
-    #crmWebToEntityForm .zcwf_col_fld {
-      width:100% !important; float:none !important;
-      padding:0 !important; margin:0 !important;
-    }
-    /* inputs */
-    #crmWebToEntityForm .zcwf_col_fld input[type=text],
-    #crmWebToEntityForm .zcwf_col_fld textarea {
+    #crmWebToEntityForm .zcwf_col_fld input[type=text] {
       width:100% !important;
-      padding:8px 11px !important;
+      padding:11px 14px !important;
       background:var(--faint) !important;
       border:1px solid var(--border) !important;
       border-radius:0 !important;
       color:var(--text) !important;
-      font-size:.82rem !important;
-      resize:none !important;
-      outline:none !important;
-      box-shadow:none !important;
-      float:none !important;
-      transition:border-color .18s !important;
+      font-size:.88rem !important;
     }
-    #crmWebToEntityForm .zcwf_col_fld input[type=text]:focus { border-color:var(--accent) !important; }
-
-    /* rows */
-    #crmWebToEntityForm .zcwf_row {
-      margin:0 0 clamp(6px,.85vh,10px) !important;
+    #crmWebToEntityForm .zcwf_col_fld input[type=text]:focus {
+      border-color:var(--accent) !important;
     }
-    #crmWebToEntityForm .zcwf_row::after { content:''; display:table; clear:both; }
-
-    /* submit button */
     #crmWebToEntityForm input[type=submit].formsubmit,
     #crmWebToEntityForm .formsubmit.zcwf_button {
-      display:block !important;
       width:100% !important;
-      padding:10px !important;
+      padding:13px !important;
       background:var(--accent) !important;
-      border:none !important; border-radius:0 !important;
       color:var(--bg) !important;
       font-family:'Bebas Neue',sans-serif !important;
-      font-size:.9rem !important; letter-spacing:.12em !important;
-      cursor:pointer !important;
-      transition:background .18s !important;
-      margin-top:clamp(5px,.7vh,9px) !important;
-      max-width:100% !important;
+      font-size:1rem !important; letter-spacing:.12em !important;
+      margin-top:12px !important;
     }
     #crmWebToEntityForm input[type=submit].formsubmit:hover { background:#f5d068 !important; }
 
-    /* hide reset button */
-    #crmWebToEntityForm input[type=reset],
-    #crmWebToEntityForm .zcwf_button[name=reset],
-    #crmWebToEntityForm [role=button][title=Reset] { display:none !important; }
-
-    /* scale down recaptcha to fit */
-    #crmWebToEntityForm .g-recaptcha {
-      transform:scale(.78); transform-origin:left top;
-      margin-bottom:-14px !important;
-    }
-
-    /* recaptcha error text */
-    #crmWebToEntityForm [id^=recapErr] {
-      font-size:.62rem !important; color:#e05454 !important;
-    }
-
-    /* Zoho success toast — restyle to match theme */
-    .wf_customMessageBox {
-      background:var(--surface) !important;
-      border:1px solid var(--accent) !important;
-      color:var(--text) !important;
-      font-family:'DM Sans',sans-serif !important;
-      border-radius:0 !important;
-      box-shadow:0 4px 24px rgba(0,0,0,.6) !important;
-    }
-    .wf_customCircle { background:var(--accent) !important; }
-    .wf_customCheckMark { border-color:var(--bg) !important; }
-
-    /* recap policy note */
-    .recap-note {
-      font-size:.54rem; color:var(--muted); margin-top:6px;
-      line-height:1.5; opacity:.6;
-    }
-    .recap-note a { color:var(--muted); text-decoration:underline; }
-
     /* FOOTER */
     footer {
-      display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;
-      padding-top:clamp(5px,1vh,14px);
+      display:flex; align-items:center; justify-content:space-between;
+      flex-wrap:wrap; gap:12px;
+      padding-top:clamp(12px,1.5vh,20px);
       border-top:1px solid var(--border);
-      animation:fU .7s .5s cubic-bezier(.16,1,.3,1) both;
+      font-size:.58rem;
     }
-    .footer-copy { font-size:.6rem; color:var(--muted); letter-spacing:.04em; }
-    .footer-links { display:flex; gap:20px; }
+    .footer-copy { color:var(--muted); letter-spacing:.04em; }
     .footer-links a {
-      font-size:.6rem; color:var(--muted); text-decoration:none;
-      letter-spacing:.1em; text-transform:uppercase; transition:color .18s;
+      color:var(--muted); text-decoration:none;
+      letter-spacing:.1em; text-transform:uppercase; margin-left:20px;
     }
     .footer-links a:hover { color:var(--accent); }
 
-    @keyframes fU { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } }
-    @keyframes fD { from { opacity:0; transform:translateY(-12px); } to { opacity:1; transform:none; } }
-
-    /* mobile — allow scroll on small screens */
-    @media (max-width:680px) {
+    @media (max-width:720px) {
       html, body { overflow:auto; }
-      .page { height:auto; min-height:100vh; }
-      main { grid-template-columns:1fr; overflow:visible; padding-bottom:16px; }
-      .side-tag, .footer-links { display:none; }
-      .headline { font-size:clamp(2.6rem,12vw,4rem); }
+      .blob { display:none; }
+      main { grid-template-columns:1fr; gap:32px; }
+      .coming-soon { font-size:clamp(3.8rem, 14vw, 5.8rem); }
+      .tagline { font-size:clamp(1.6rem, 7vw, 2.4rem); }
+      .form-panel { max-width:100%; justify-self:stretch; padding:20px; }
+      footer { justify-content:center; text-align:center; }
+      .footer-links { display:none; }
     }
   </style>
 </head>
 <body>
-
   <div class="bg-grid"></div>
   <div class="blob blob-1"></div>
   <div class="blob blob-2"></div>
-  <div class="side-tag">VendorMart © 2025 — Coming Soon</div>
-
-  <svg class="deco-ring" viewBox="0 0 480 480" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="240" cy="240" r="230" stroke="white" stroke-width=".6"/>
-    <circle cx="240" cy="240" r="160" stroke="white" stroke-width=".5"/>
-    <circle cx="240" cy="240" r="90"  stroke="white" stroke-width=".4"/>
-    <line x1="10"  y1="240" x2="470" y2="240" stroke="white" stroke-width=".4"/>
-    <line x1="240" y1="10"  x2="240" y2="470" stroke="white" stroke-width=".4"/>
-  </svg>
 
   <div class="page">
-
     <!-- HEADER -->
     <header>
-      <div class="logo">
+      <a class="logo" href="#">
         <div class="logo-mark">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-               stroke-linecap="round" stroke-linejoin="round">
-            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
-            <line x1="3" y1="6" x2="21" y2="6"/>
-            <path d="M16 10a4 4 0 0 1-8 0"/>
+          <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 16L6 22v15a2.5 2.5 0 0 0 2.5 2.5h27A2.5 2.5 0 0 0 38 37V22l-3-6Z" fill="#1a1a17" stroke="#f0c040" stroke-width="1.6" stroke-linejoin="round"/>
+            <path d="M16.5 17.5c0-3.04 2.46-5.5 5.5-5.5s5.5 2.46 5.5 5.5" fill="none" stroke="#f0c040" stroke-width="1.6" stroke-linecap="round"/>
+            <line x1="6" y1="22" x2="38" y2="22" stroke="#f0c040" stroke-width="1.4"/>
+            <text x="22" y="35.5" text-anchor="middle" font-family="'DM Sans', Georgia, serif" font-size="11" font-weight="600" fill="#f0c040" opacity=".95">?</text>
           </svg>
         </div>
-        <span class="logo-name">VENDOR<span>MART</span></span>
-      </div>
+        <div class="logo-wordmark">
+          <span class="wm-top">VENDOR<span>MART</span></span>
+          <span class="wm-sub">Commerce Redefined</span>
+        </div>
+      </a>
       <div class="pill">
         <div class="pill-dot"></div>
-        <span>In Development</span>
+        In Development
       </div>
     </header>
 
     <!-- MAIN -->
     <main>
-
-      <!-- LEFT: copy + features -->
       <div class="hero-left">
         <div class="eyebrow">The Future of Vendor Commerce</div>
-
-        <h1 class="headline">
-          YOUR<br>
-          <span class="ln-stroke">MARKET.</span><br>
-          <span class="ln-hl">UNLEASHED.</span>
-        </h1>
-
+        <h1 class="coming-soon">COMING SOON</h1>
+        <div class="tagline">YOUR MARKET. UNLEASHED.</div>
+        
         <p class="subline">
-          A <strong>next-generation marketplace</strong> where vendors scale faster,
+          A next-generation marketplace where vendors scale faster, 
           buyers discover smarter, and commerce flows without friction.
         </p>
 
-        <div class="launch-badge">
-          <div class="lb-icon">🚀</div>
-          <div class="lb-text">
-            <span class="top">Status</span>
-            <span class="btm">Launching Soon — Date TBA</span>
+        <div class="status-badge">
+          <span style="font-size:1.4rem;">🚀</span>
+          <div class="sb-text">
+            <span style="font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); display:block;">
+              Launching Soon
+            </span>
+            <span class="btm">Date TBA • 2025</span>
           </div>
         </div>
-
-        <div class="features">
-          <div class="fp"><span class="fp-dot"></span>Smart Vendor Dashboard</div>
-          <div class="fp"><span class="fp-dot"></span>Instant Payouts</div>
-          <div class="fp"><span class="fp-dot"></span>AI Product Discovery</div>
-          <div class="fp"><span class="fp-dot"></span>Multi-Vendor Storefront</div>
-          <div class="fp"><span class="fp-dot"></span>Analytics &amp; Insights</div>
-          <div class="fp"><span class="fp-dot"></span>Zero Setup Fees</div>
-        </div>
       </div>
 
-      <!-- RIGHT: Zoho form panel -->
+      <!-- Waitlist Form -->
       <div class="form-panel">
-        <div class="form-panel-title">Get Early Access</div>
-        <div class="form-panel-sub">Be first to know when we go live. No spam, ever.</div>
-
-        <!-- Zoho Web Form embed — renders the complete form (fields + recaptcha + submit) -->
-        <script id = 'formScript6708968000003386673' src = 'https://crm.zoho.com/crm/WebFormServeServlet?rid=0ed3da376a8b09054ce27cdc7c531f56c60e9fc5e3e5f061b2d3da6e857822b719f88b8f195ad8d458813b3f1227c3d4gid77604f6404bedfec83630f28a20378c1c3fe781a89e166ee744fce7ccf108055&script=$sYG'>
-</script>
-
-        <p class="recap-note">
-          Protected by reCAPTCHA —
-          <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy</a> &amp;
-          <a href="https://policies.google.com/terms"   target="_blank" rel="noopener">Terms</a>
+        <div class="form-panel-title">Join the Waitlist</div>
+        <div class="form-panel-sub">Be the first to know when we launch. No spam, ever.</div>
+        
+        <script id="formScript6708968000003386673"
+          src="https://crm.zoho.com/crm/WebFormServeServlet?rid=0ed3da376a8b09054ce27cdc7c531f56c60e9fc5e3e5f061b2d3da6e857822b719f88b8f195ad8d458813b3f1227c3d4gid77604f6404bedfec83630f28a20378c1c3fe781a89e166ee744fce7ccf108055&script=$sYG">
+        </script>
+        
+        <p class="recap-note" style="margin-top:16px; font-size:0.55rem; color:var(--muted);">
+          Protected by reCAPTCHA — 
+          <a href="https://policies.google.com/privacy" target="_blank">Privacy</a> & 
+          <a href="https://policies.google.com/terms" target="_blank">Terms</a>
         </p>
       </div>
-
     </main>
 
     <!-- FOOTER -->
@@ -452,13 +324,11 @@
         <a href="#">Contact</a>
       </nav>
     </footer>
-
   </div>
 
-  <!-- Zoho Analytics — do not remove -->
+  <!-- Zoho Analytics -->
   <script id="wf_anal"
     src="https://crm.zohopublic.com/crm/WebFormAnalyticsServeServlet?rid=e9cb66628b6fa35f48397a37f8892551944049259a6b4f90b8198d85de4c4714f4c6ec1e4ee2d71dbe1b57ece0515e65gid345f4332655f7d3b4d19652655c511d143d2ec55153175386c4a30d7ab2abe42gid1b44c3800d551327bacfb3625468ffbf06d6201cda7701cb2fa1a4db8ecb338fgidc47ce5ca2743217c8b1bf178775926b1f7eb62500bcee6197e035e7281ffe66e&tw=adccce2b376333c518104a836ce09ef2471112b553390f74ef0d8d10500e5ddf">
   </script>
-
 </body>
 </html>
