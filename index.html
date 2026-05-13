@@ -13,18 +13,19 @@
 
     :root {
       --grad-start: #f4776a;
-      --grad-mid: #e8556a;
-      --grad-end: #c94080;
-      --white: #ffffff;
-      --white-60: rgba(255,255,255,0.6);
-      --white-30: rgba(255,255,255,0.3);
-      --white-15: rgba(255,255,255,0.15);
-      --white-08: rgba(255,255,255,0.08);
-      --dark: #1a0a10;
+      --grad-mid:   #e8556a;
+      --grad-end:   #c94080;
+      --white:      #ffffff;
+      --white-70:   rgba(255,255,255,0.70);
+      --white-45:   rgba(255,255,255,0.45);
+      --white-25:   rgba(255,255,255,0.25);
+      --white-14:   rgba(255,255,255,0.14);
+      --white-08:   rgba(255,255,255,0.08);
+      --dark:       #1a0a10;
     }
 
     html, body {
-      width:100%; height:100%;
+      width: 100%;
       font-family: 'Jost', sans-serif;
     }
 
@@ -36,10 +37,11 @@
       justify-content: center;
       background: linear-gradient(145deg, var(--grad-start) 0%, var(--grad-mid) 50%, var(--grad-end) 100%);
       position: relative;
-      overflow: hidden;
+      overflow-x: hidden;
+      padding: clamp(40px, 8vh, 80px) clamp(20px, 5vw, 40px) 64px;
     }
 
-    /* Soft noise overlay */
+    /* Noise texture */
     body::before {
       content: '';
       position: fixed; inset: 0;
@@ -49,12 +51,12 @@
       z-index: 1;
     }
 
-    /* Subtle light orb */
+    /* Light orb */
     body::after {
       content: '';
       position: fixed;
       width: 700px; height: 700px;
-      background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 65%);
+      background: radial-gradient(circle, rgba(255,255,255,0.13) 0%, transparent 65%);
       top: -200px; left: 50%;
       transform: translateX(-50%);
       pointer-events: none;
@@ -67,61 +69,56 @@
       flex-direction: column;
       align-items: center;
       text-align: center;
-      padding: clamp(32px, 6vw, 60px) clamp(24px, 5vw, 48px);
       width: 100%;
-      max-width: 680px;
-      animation: fadeUp 1s ease both;
+      max-width: 600px;
+      animation: fadeUp 0.9s ease both;
     }
 
     @keyframes fadeUp {
-      from { opacity:0; transform: translateY(24px); }
-      to   { opacity:1; transform: translateY(0); }
-    }
-
-    .logo-area {
-      margin-bottom: clamp(32px, 6vh, 60px);
-      animation: fadeUp 1s 0.1s ease both;
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     .logo-name {
-      font-family: 'Jost', sans-serif;
       font-weight: 200;
-      font-size: clamp(0.7rem, 1.5vw, 0.85rem);
-      letter-spacing: 0.45em;
+      font-size: clamp(0.62rem, 1.4vw, 0.78rem);
+      letter-spacing: 0.48em;
       text-transform: uppercase;
-      color: var(--white-60);
+      color: var(--white-70);
+      margin-bottom: clamp(28px, 5vh, 52px);
+      animation: fadeUp 0.9s 0.1s ease both;
     }
 
     h1 {
       font-family: 'Cormorant Garamond', serif;
       font-weight: 300;
-      font-size: clamp(3.8rem, 12vw, 7.5rem);
-      letter-spacing: 0.12em;
+      font-size: clamp(3.6rem, 16vw, 7.2rem);
+      letter-spacing: 0.13em;
       color: var(--white);
-      line-height: 0.9;
-      margin-bottom: clamp(16px, 2.5vh, 24px);
-      animation: fadeUp 1s 0.2s ease both;
+      line-height: 0.88;
+      margin-bottom: clamp(14px, 2vh, 22px);
+      animation: fadeUp 0.9s 0.2s ease both;
     }
 
     .subtitle {
       font-weight: 300;
-      font-size: clamp(0.8rem, 1.8vw, 0.95rem);
-      letter-spacing: 0.08em;
-      color: var(--white-60);
-      line-height: 1.7;
-      max-width: 36ch;
-      margin-bottom: clamp(36px, 6vh, 56px);
-      animation: fadeUp 1s 0.35s ease both;
+      font-size: clamp(0.78rem, 2vw, 0.92rem);
+      letter-spacing: 0.06em;
+      color: var(--white-70);
+      line-height: 1.75;
+      max-width: 34ch;
+      margin-bottom: clamp(32px, 5vh, 52px);
+      animation: fadeUp 0.9s 0.32s ease both;
     }
 
-    /* ── Form wrapper ── */
+    /* ── Form wrap ── */
     .form-wrap {
       width: 100%;
-      max-width: 520px;
-      animation: fadeUp 1s 0.5s ease both;
+      max-width: 480px;
+      animation: fadeUp 0.9s 0.46s ease both;
     }
 
-    /* Zoho form overrides */
+    /* ─── Zoho form shell ─── */
     #crmWebToEntityForm {
       background: transparent !important;
       padding: 0 !important;
@@ -130,115 +127,120 @@
       box-shadow: none !important;
     }
 
-    /* Hide zoho title */
+    /* Hide title Zoho injects */
     #crmWebToEntityForm .zcwf_title { display: none !important; }
 
-    /* Row layout — stack fields side by side */
+    /* ---- ROWS: one per field, stacked ---- */
     #crmWebToEntityForm .zcwf_row {
       display: flex !important;
-      gap: 10px !important;
-      align-items: flex-end !important;
-      flex-wrap: wrap !important;
+      flex-direction: column !important;
       margin-bottom: 10px !important;
     }
 
-    #crmWebToEntityForm .zcwf_col_lab {
-      display: none !important;
-    }
+    /* Hide labels — placeholders carry the context */
+    #crmWebToEntityForm .zcwf_col_lab { display: none !important; }
 
+    /* Field column fills row */
     #crmWebToEntityForm .zcwf_col_fld {
+      width: 100% !important;
       flex: 1 !important;
-      min-width: 140px !important;
     }
 
-    #crmWebToEntityForm .zcwf_col_fld input[type=text],
-    #crmWebToEntityForm .zcwf_col_fld input[type=email] {
+    /* All text / email inputs */
+    #crmWebToEntityForm .zcwf_col_fld input[type="text"],
+    #crmWebToEntityForm .zcwf_col_fld input[type="email"] {
       width: 100% !important;
-      padding: 14px 20px !important;
-      background: var(--white-15) !important;
-      border: 1px solid var(--white-30) !important;
+      padding: 14px 22px !important;
+      background: var(--white-14) !important;
+      border: 1px solid var(--white-25) !important;
       border-radius: 100px !important;
       color: var(--white) !important;
       font-family: 'Jost', sans-serif !important;
-      font-size: 0.85rem !important;
+      font-size: 0.86rem !important;
       font-weight: 300 !important;
       letter-spacing: 0.04em !important;
       outline: none !important;
-      transition: border-color 0.2s, background 0.2s !important;
       -webkit-appearance: none !important;
+      transition: border-color 0.2s, background 0.2s !important;
     }
 
-    #crmWebToEntityForm .zcwf_col_fld input[type=text]::placeholder,
-    #crmWebToEntityForm .zcwf_col_fld input[type=email]::placeholder {
-      color: var(--white-60) !important;
+    #crmWebToEntityForm .zcwf_col_fld input[type="text"]::placeholder,
+    #crmWebToEntityForm .zcwf_col_fld input[type="email"]::placeholder {
+      color: var(--white-45) !important;
     }
 
-    #crmWebToEntityForm .zcwf_col_fld input[type=text]:focus,
-    #crmWebToEntityForm .zcwf_col_fld input[type=email]:focus {
-      border-color: var(--white) !important;
+    #crmWebToEntityForm .zcwf_col_fld input[type="text"]:focus,
+    #crmWebToEntityForm .zcwf_col_fld input[type="email"]:focus {
+      border-color: rgba(255,255,255,0.7) !important;
       background: var(--white-08) !important;
     }
 
-    /* Submit button */
-    #crmWebToEntityForm input[type=submit].formsubmit,
+    /* ---- Submit button ---- */
+    #crmWebToEntityForm input[type="submit"].formsubmit,
     #crmWebToEntityForm .formsubmit.zcwf_button {
-      padding: 14px 28px !important;
+      display: block !important;
+      width: 100% !important;
+      margin-top: 14px !important;
+      padding: 15px 28px !important;
       background: var(--dark) !important;
       color: var(--white) !important;
       border: none !important;
       border-radius: 100px !important;
       font-family: 'Jost', sans-serif !important;
-      font-size: 0.72rem !important;
+      font-size: 0.7rem !important;
       font-weight: 500 !important;
-      letter-spacing: 0.2em !important;
+      letter-spacing: 0.22em !important;
       text-transform: uppercase !important;
       cursor: pointer !important;
-      white-space: nowrap !important;
       transition: opacity 0.2s !important;
-      width: auto !important;
-      flex-shrink: 0 !important;
+      -webkit-appearance: none !important;
     }
 
-    #crmWebToEntityForm input[type=submit].formsubmit:hover {
-      opacity: 0.8 !important;
+    #crmWebToEntityForm input[type="submit"].formsubmit:hover {
+      opacity: 0.78 !important;
     }
+
+    /* ---- Hide Reset button ---- */
+    #crmWebToEntityForm input[type="reset"],
+    #crmWebToEntityForm .zcwf_button[type="reset"],
+    #crmWebToEntityForm .formsubmit + .formsubmit,
+    #crmWebToEntityForm .zcwf_row:last-of-type .zcwf_col_fld input:not([type="submit"]) {
+      display: none !important;
+    }
+
+    /* ---- Inline validation / error text Zoho adds ---- */
+    #crmWebToEntityForm .zcwf_col_help { display: none !important; }
 
     /* Privacy note */
     .privacy {
-      margin-top: 18px;
-      font-size: 0.6rem;
-      letter-spacing: 0.08em;
-      color: var(--white-60);
-      animation: fadeUp 1s 0.65s ease both;
+      margin-top: 16px;
+      font-size: 0.58rem;
+      letter-spacing: 0.07em;
+      color: var(--white-45);
     }
     .privacy a {
-      color: var(--white-60);
+      color: var(--white-45);
       text-decoration: underline;
       text-underline-offset: 2px;
     }
-    .privacy a:hover { color: var(--white); }
+    .privacy a:hover { color: var(--white-70); }
 
     /* Footer */
     .footer-note {
       position: fixed;
-      bottom: 24px;
+      bottom: 22px;
       left: 0; right: 0;
       text-align: center;
-      font-size: 0.58rem;
-      letter-spacing: 0.12em;
-      color: var(--white-30);
+      font-size: 0.56rem;
+      letter-spacing: 0.13em;
+      color: rgba(255,255,255,0.22);
       z-index: 10;
       text-transform: uppercase;
     }
 
-    @media (max-width: 500px) {
-      #crmWebToEntityForm .zcwf_row {
-        flex-direction: column !important;
-      }
-      #crmWebToEntityForm input[type=submit].formsubmit,
-      #crmWebToEntityForm .formsubmit.zcwf_button {
-        width: 100% !important;
-      }
+    /* ── Mobile tweaks ── */
+    @media (max-width: 480px) {
+      h1 { letter-spacing: 0.08em; }
     }
   </style>
 </head>
@@ -246,9 +248,7 @@
 
   <div class="container">
 
-    <div class="logo-area">
-      <span class="logo-name">VendorMart</span>
-    </div>
+    <span class="logo-name">VendorMart</span>
 
     <h1>COMING<br>SOON</h1>
 
@@ -257,14 +257,82 @@
     </p>
 
     <div class="form-wrap">
+
+      <!--
+        Zoho CRM Web-to-Lead form.
+        The external script injects fields; CSS above overrides all visual styling.
+        Reset button and label columns are hidden via CSS.
+      -->
       <script id="formScript6708968000003386673"
         src="https://crm.zoho.com/crm/WebFormServeServlet?rid=0ed3da376a8b09054ce27cdc7c531f56c60e9fc5e3e5f061b2d3da6e857822b719f88b8f195ad8d458813b3f1227c3d4gid77604f6404bedfec83630f28a20378c1c3fe781a89e166ee744fce7ccf108055&script=$sYG">
       </script>
 
+      <!--
+        Inject placeholders after Zoho renders the fields,
+        since the external script drops inputs without placeholder attributes.
+      -->
+      <script>
+        (function injectPlaceholders() {
+          const placeholderMap = {
+            'First Name':  'First name',
+            'Last Name':   'Last name',
+            'Email':       'Email address',
+            'Phone':       'Phone number',
+            'Company':     'Company (optional)',
+            'Last_Name':   'Last name',
+            'First_Name':  'First name',
+            'Email':       'Email address',
+          };
+
+          function applyPlaceholders() {
+            const form = document.getElementById('crmWebToEntityForm');
+            if (!form) return;
+
+            // Hide any reset buttons that Zoho adds
+            form.querySelectorAll('input[type="reset"]').forEach(el => {
+              el.style.setProperty('display', 'none', 'important');
+            });
+
+            // Apply placeholders based on name attribute or nearby label text
+            form.querySelectorAll('input[type="text"], input[type="email"]').forEach(input => {
+              if (input.placeholder) return; // already set
+
+              // Try matching by input name
+              const name = (input.name || '').replace(/^CONT_/, '').replace(/_/g, ' ');
+              if (placeholderMap[name]) {
+                input.placeholder = placeholderMap[name];
+                return;
+              }
+
+              // Try finding label in same row
+              const row = input.closest('.zcwf_row') || input.closest('tr') || input.parentElement;
+              if (row) {
+                const label = row.querySelector('label, .zcwf_col_lab');
+                if (label) {
+                  const txt = label.textContent.trim().replace(/\*$/, '').trim();
+                  input.placeholder = txt || 'Enter value';
+                  return;
+                }
+              }
+
+              input.placeholder = 'Enter value';
+            });
+          }
+
+          // Run after Zoho script likely rendered (up to 3 retries)
+          let attempts = 0;
+          const interval = setInterval(() => {
+            applyPlaceholders();
+            attempts++;
+            if (attempts >= 8) clearInterval(interval);
+          }, 400);
+        })();
+      </script>
+
       <p class="privacy">
         Protected by reCAPTCHA —
-        <a href="https://policies.google.com/privacy" target="_blank">Privacy</a> &amp;
-        <a href="https://policies.google.com/terms" target="_blank">Terms</a>
+        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy</a> &amp;
+        <a href="https://policies.google.com/terms" target="_blank" rel="noopener">Terms</a>
       </p>
     </div>
 
