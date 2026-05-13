@@ -3,332 +3,279 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Vendor Mart — Coming Soon</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
-  
-  <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%230a0a08'/%3E%3Cpath d='M18 20 14 28v22a3 3 0 0 0 3 3h30a3 3 0 0 0 3-3V28l-4-8Z' fill='none' stroke='%23f0c040' stroke-width='2.5' stroke-linejoin='round'/%3E%3Cline x1='14' y1='28' x2='50' y2='28' stroke='%23f0c040' stroke-width='2.5'/%3E%3Cpath d='M27 22c0-2.76 2.24-5 5-5s5 2.24 5 5' fill='none' stroke='%23f0c040' stroke-width='2.5' stroke-linecap='round'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Georgia,serif' font-size='14' font-weight='bold' fill='%23f0c040'%3E%3F%3C/text%3E%3C/svg%3E"/>
+  <title>VendorMart — Coming Soon</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet"/>
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23e85d75'/%3E%3Cpath d='M18 20 14 28v22a3 3 0 0 0 3 3h30a3 3 0 0 0 3-3V28l-4-8Z' fill='none' stroke='white' stroke-width='2.5' stroke-linejoin='round'/%3E%3C/svg%3E"/>
 
   <style>
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
     :root {
-      --bg: #0a0a08;
-      --surface: #111110;
-      --border: #222220;
-      --accent: #f0c040;
-      --accent2: #e87c3e;
-      --text: #f0ede6;
-      --muted: #6b6960;
-      --faint: #161614;
+      --grad-start: #f4776a;
+      --grad-mid: #e8556a;
+      --grad-end: #c94080;
+      --white: #ffffff;
+      --white-60: rgba(255,255,255,0.6);
+      --white-30: rgba(255,255,255,0.3);
+      --white-15: rgba(255,255,255,0.15);
+      --white-08: rgba(255,255,255,0.08);
+      --dark: #1a0a10;
     }
+
     html, body {
-      width:100%; min-height:100svh;
-      overflow:hidden;
-      background:var(--bg);
-      color:var(--text);
-      font-family:'DM Sans', sans-serif;
+      width:100%; height:100%;
+      font-family: 'Jost', sans-serif;
     }
 
-    /* Background elements - made lighter */
+    body {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(145deg, var(--grad-start) 0%, var(--grad-mid) 50%, var(--grad-end) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Soft noise overlay */
     body::before {
-      content:''; position:fixed; inset:0; z-index:999; pointer-events:none;
-      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      opacity:.18;
-    }
-    .bg-grid {
-      position:fixed; inset:0; z-index:0;
-      background-image:
-        linear-gradient(var(--border) 1px, transparent 1px),
-        linear-gradient(90deg, var(--border) 1px, transparent 1px);
-      background-size:60px 60px;
-      mask-image:radial-gradient(ellipse 75% 75% at 50% 50%, black 0%, transparent 100%);
-    }
-    .blob { position:fixed; border-radius:50%; filter:blur(110px); pointer-events:none; z-index:0; opacity:0.7; }
-    .blob-1 {
-      width:550px; height:550px;
-      background:radial-gradient(circle, rgba(240,192,64,.08) 0%, transparent 70%);
-      top:-180px; left:-120px;
-    }
-    .blob-2 {
-      width:420px; height:420px;
-      background:radial-gradient(circle, rgba(232,124,62,.06) 0%, transparent 70%);
-      bottom:-80px; right:-60px;
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+      opacity: 0.35;
+      pointer-events: none;
+      z-index: 1;
     }
 
-    .page {
-      position:relative; z-index:10;
-      width:min(100%, 1280px); height:100svh;
-      margin:0 auto;
-      display:grid;
-      grid-template-rows:auto 1fr auto;
-      padding:clamp(16px,2.2vh,32px) clamp(20px,4.5vw,60px);
-      gap:clamp(12px,1.8vh,24px);
+    /* Subtle light orb */
+    body::after {
+      content: '';
+      position: fixed;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 65%);
+      top: -200px; left: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+      z-index: 1;
     }
 
-    /* HEADER */
-    header {
-      display:flex; align-items:center; justify-content:space-between;
-      padding-bottom:clamp(10px,1.5vh,20px);
-      border-bottom:1px solid var(--border);
-    }
-    .logo {
-      display:flex; align-items:center; gap:11px;
-      text-decoration:none;
-    }
-    .logo-mark { width:36px; height:36px; flex-shrink:0; }
-    .logo-wordmark .wm-top {
-      font-family:'Bebas Neue', sans-serif;
-      font-size:clamp(1.1rem,1.8vw,1.4rem);
-      letter-spacing:.12em;
-    }
-    .logo-wordmark .wm-top span { color:var(--accent); }
-    .logo-wordmark .wm-sub {
-      font-size:.55rem; letter-spacing:.22em; text-transform:uppercase;
-      color:var(--muted);
-    }
-    .pill {
-      display:flex; align-items:center; gap:7px;
-      padding:5px 14px; border-radius:100px;
-      background:var(--faint); border:1px solid var(--border);
-      font-size:.58rem; font-weight:500; letter-spacing:.14em;
-      text-transform:uppercase; color:var(--muted);
-    }
-    .pill-dot {
-      width:6px; height:6px; background:var(--accent); border-radius:50%;
-      box-shadow:0 0 8px var(--accent);
-      animation:pulse 2.2s ease-in-out infinite;
-    }
-    @keyframes pulse { 50% { opacity:.3; transform:scale(.65); } }
-
-    /* MAIN */
-    main {
-      display:grid;
-      grid-template-columns:minmax(0,1fr) minmax(270px, 360px);
-      align-items:center;
-      gap:clamp(32px,5vw,80px);
+    .container {
+      position: relative; z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: clamp(32px, 6vw, 60px) clamp(24px, 5vw, 48px);
+      width: 100%;
+      max-width: 680px;
+      animation: fadeUp 1s ease both;
     }
 
-    .hero-left {
-      display:flex; flex-direction:column;
-      justify-content:center;
+    @keyframes fadeUp {
+      from { opacity:0; transform: translateY(24px); }
+      to   { opacity:1; transform: translateY(0); }
     }
 
-    .eyebrow {
-      font-size:.65rem; font-weight:500; letter-spacing:.28em;
-      text-transform:uppercase; color:var(--accent);
-      margin-bottom:12px;
+    .logo-area {
+      margin-bottom: clamp(32px, 6vh, 60px);
+      animation: fadeUp 1s 0.1s ease both;
     }
 
-    .coming-soon {
-      font-family:'Bebas Neue', sans-serif;
-      font-size:clamp(4.8rem, 13vw, 11.5rem);
-      line-height:.78;
-      letter-spacing:-0.02em;
-      font-weight:700;
-      margin-bottom:8px;
+    .logo-name {
+      font-family: 'Jost', sans-serif;
+      font-weight: 200;
+      font-size: clamp(0.7rem, 1.5vw, 0.85rem);
+      letter-spacing: 0.45em;
+      text-transform: uppercase;
+      color: var(--white-60);
     }
 
-    .tagline {
-      font-family:'Bebas Neue', sans-serif;
-      font-size:clamp(1.8rem, 4.5vw, 3.2rem);
-      line-height:1;
-      color:var(--accent);
-      margin-bottom:clamp(16px,2.5vh,28px);
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(3.8rem, 12vw, 7.5rem);
+      letter-spacing: 0.12em;
+      color: var(--white);
+      line-height: 0.9;
+      margin-bottom: clamp(16px, 2.5vh, 24px);
+      animation: fadeUp 1s 0.2s ease both;
     }
 
-    .subline {
-      font-size:clamp(.9rem,1.2vw,1.05rem);
-      font-weight:300; color:var(--muted); line-height:1.65;
-      max-width:38ch;
+    .subtitle {
+      font-weight: 300;
+      font-size: clamp(0.8rem, 1.8vw, 0.95rem);
+      letter-spacing: 0.08em;
+      color: var(--white-60);
+      line-height: 1.7;
+      max-width: 36ch;
+      margin-bottom: clamp(36px, 6vh, 56px);
+      animation: fadeUp 1s 0.35s ease both;
     }
 
-    /* Status */
-    .status-badge {
-      margin-top:clamp(24px,3vh,40px);
-      display:inline-flex; align-items:center; gap:12px;
-      padding:10px 20px;
-      background:var(--faint); border:1px solid var(--border);
-      width:fit-content;
-    }
-    .status-badge .sb-text .btm {
-      font-family:'Bebas Neue', sans-serif;
-      font-size:1.15rem; letter-spacing:.05em; color:var(--text);
+    /* ── Form wrapper ── */
+    .form-wrap {
+      width: 100%;
+      max-width: 520px;
+      animation: fadeUp 1s 0.5s ease both;
     }
 
-    /* FORM PANEL */
-    .form-panel {
-      background:var(--surface);
-      border:1px solid var(--border);
-      padding:clamp(24px,3vw,32px);
-      align-self:center;
-      width:100%;
-      max-width:360px;
-      justify-self:end;
-    }
-    .form-panel::before {
-      content:''; position:absolute; top:0; left:0; right:0; height:3px;
-      background:linear-gradient(90deg,var(--accent2),var(--accent));
-    }
-    .form-panel-title {
-      font-family:'Bebas Neue', sans-serif;
-      font-size:1.45rem; letter-spacing:.06em;
-      margin-bottom:4px;
-    }
-    .form-panel-sub {
-      font-size:.68rem; color:var(--muted); line-height:1.5;
-      margin-bottom:20px;
-    }
-
-    /* Zoho Form Overrides */
+    /* Zoho form overrides */
     #crmWebToEntityForm {
-      background:transparent !important;
-      max-width:100% !important;
-      padding:0 !important;
+      background: transparent !important;
+      padding: 0 !important;
+      max-width: 100% !important;
+      border: none !important;
+      box-shadow: none !important;
     }
-    #crmWebToEntityForm * {
-      font-family:'DM Sans',sans-serif !important;
-      color:var(--text) !important;
+
+    /* Hide zoho title */
+    #crmWebToEntityForm .zcwf_title { display: none !important; }
+
+    /* Row layout — stack fields side by side */
+    #crmWebToEntityForm .zcwf_row {
+      display: flex !important;
+      gap: 10px !important;
+      align-items: flex-end !important;
+      flex-wrap: wrap !important;
+      margin-bottom: 10px !important;
     }
-    #crmWebToEntityForm .zcwf_title { display:none !important; }
+
     #crmWebToEntityForm .zcwf_col_lab {
-      font-size:.58rem !important; font-weight:500 !important;
-      letter-spacing:.1em !important; text-transform:uppercase !important;
-      color:var(--muted) !important;
-      padding:0 0 6px !important;
+      display: none !important;
     }
-    #crmWebToEntityForm .zcwf_col_fld input[type=text] {
-      width:100% !important;
-      padding:11px 14px !important;
-      background:var(--faint) !important;
-      border:1px solid var(--border) !important;
-      border-radius:0 !important;
-      color:var(--text) !important;
-      font-size:.88rem !important;
+
+    #crmWebToEntityForm .zcwf_col_fld {
+      flex: 1 !important;
+      min-width: 140px !important;
     }
-    #crmWebToEntityForm .zcwf_col_fld input[type=text]:focus {
-      border-color:var(--accent) !important;
+
+    #crmWebToEntityForm .zcwf_col_fld input[type=text],
+    #crmWebToEntityForm .zcwf_col_fld input[type=email] {
+      width: 100% !important;
+      padding: 14px 20px !important;
+      background: var(--white-15) !important;
+      border: 1px solid var(--white-30) !important;
+      border-radius: 100px !important;
+      color: var(--white) !important;
+      font-family: 'Jost', sans-serif !important;
+      font-size: 0.85rem !important;
+      font-weight: 300 !important;
+      letter-spacing: 0.04em !important;
+      outline: none !important;
+      transition: border-color 0.2s, background 0.2s !important;
+      -webkit-appearance: none !important;
     }
+
+    #crmWebToEntityForm .zcwf_col_fld input[type=text]::placeholder,
+    #crmWebToEntityForm .zcwf_col_fld input[type=email]::placeholder {
+      color: var(--white-60) !important;
+    }
+
+    #crmWebToEntityForm .zcwf_col_fld input[type=text]:focus,
+    #crmWebToEntityForm .zcwf_col_fld input[type=email]:focus {
+      border-color: var(--white) !important;
+      background: var(--white-08) !important;
+    }
+
+    /* Submit button */
     #crmWebToEntityForm input[type=submit].formsubmit,
     #crmWebToEntityForm .formsubmit.zcwf_button {
-      width:100% !important;
-      padding:13px !important;
-      background:var(--accent) !important;
-      color:var(--bg) !important;
-      font-family:'Bebas Neue',sans-serif !important;
-      font-size:1rem !important; letter-spacing:.12em !important;
-      margin-top:12px !important;
+      padding: 14px 28px !important;
+      background: var(--dark) !important;
+      color: var(--white) !important;
+      border: none !important;
+      border-radius: 100px !important;
+      font-family: 'Jost', sans-serif !important;
+      font-size: 0.72rem !important;
+      font-weight: 500 !important;
+      letter-spacing: 0.2em !important;
+      text-transform: uppercase !important;
+      cursor: pointer !important;
+      white-space: nowrap !important;
+      transition: opacity 0.2s !important;
+      width: auto !important;
+      flex-shrink: 0 !important;
     }
-    #crmWebToEntityForm input[type=submit].formsubmit:hover { background:#f5d068 !important; }
 
-    /* FOOTER */
-    footer {
-      display:flex; align-items:center; justify-content:space-between;
-      flex-wrap:wrap; gap:12px;
-      padding-top:clamp(12px,1.5vh,20px);
-      border-top:1px solid var(--border);
-      font-size:.58rem;
+    #crmWebToEntityForm input[type=submit].formsubmit:hover {
+      opacity: 0.8 !important;
     }
-    .footer-copy { color:var(--muted); letter-spacing:.04em; }
-    .footer-links a {
-      color:var(--muted); text-decoration:none;
-      letter-spacing:.1em; text-transform:uppercase; margin-left:20px;
-    }
-    .footer-links a:hover { color:var(--accent); }
 
-    @media (max-width:720px) {
-      html, body { overflow:auto; }
-      .blob { display:none; }
-      main { grid-template-columns:1fr; gap:32px; }
-      .coming-soon { font-size:clamp(3.8rem, 14vw, 5.8rem); }
-      .tagline { font-size:clamp(1.6rem, 7vw, 2.4rem); }
-      .form-panel { max-width:100%; justify-self:stretch; padding:20px; }
-      footer { justify-content:center; text-align:center; }
-      .footer-links { display:none; }
+    /* Privacy note */
+    .privacy {
+      margin-top: 18px;
+      font-size: 0.6rem;
+      letter-spacing: 0.08em;
+      color: var(--white-60);
+      animation: fadeUp 1s 0.65s ease both;
+    }
+    .privacy a {
+      color: var(--white-60);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .privacy a:hover { color: var(--white); }
+
+    /* Footer */
+    .footer-note {
+      position: fixed;
+      bottom: 24px;
+      left: 0; right: 0;
+      text-align: center;
+      font-size: 0.58rem;
+      letter-spacing: 0.12em;
+      color: var(--white-30);
+      z-index: 10;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 500px) {
+      #crmWebToEntityForm .zcwf_row {
+        flex-direction: column !important;
+      }
+      #crmWebToEntityForm input[type=submit].formsubmit,
+      #crmWebToEntityForm .formsubmit.zcwf_button {
+        width: 100% !important;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="bg-grid"></div>
-  <div class="blob blob-1"></div>
-  <div class="blob blob-2"></div>
 
-  <div class="page">
-    <!-- HEADER -->
-    <header>
-      <a class="logo" href="#">
-        <div class="logo-mark">
-          <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M9 16L6 22v15a2.5 2.5 0 0 0 2.5 2.5h27A2.5 2.5 0 0 0 38 37V22l-3-6Z" fill="#1a1a17" stroke="#f0c040" stroke-width="1.6" stroke-linejoin="round"/>
-            <path d="M16.5 17.5c0-3.04 2.46-5.5 5.5-5.5s5.5 2.46 5.5 5.5" fill="none" stroke="#f0c040" stroke-width="1.6" stroke-linecap="round"/>
-            <line x1="6" y1="22" x2="38" y2="22" stroke="#f0c040" stroke-width="1.4"/>
-            <text x="22" y="35.5" text-anchor="middle" font-family="'DM Sans', Georgia, serif" font-size="11" font-weight="600" fill="#f0c040" opacity=".95">?</text>
-          </svg>
-        </div>
-        <div class="logo-wordmark">
-          <span class="wm-top">VENDOR<span>MART</span></span>
-          <span class="wm-sub">Commerce Redefined</span>
-        </div>
-      </a>
-      <div class="pill">
-        <div class="pill-dot"></div>
-        In Development
-      </div>
-    </header>
+  <div class="container">
 
-    <!-- MAIN -->
-    <main>
-      <div class="hero-left">
-        <div class="eyebrow">The Future of Vendor Commerce</div>
-        <h1 class="coming-soon">COMING SOON</h1>
-        <div class="tagline">YOUR MARKET. UNLEASHED.</div>
-        
-        <p class="subline">
-          A next-generation marketplace where vendors scale faster, 
-          buyers discover smarter, and commerce flows without friction.
-        </p>
+    <div class="logo-area">
+      <span class="logo-name">VendorMart</span>
+    </div>
 
-        <div class="status-badge">
-          <span style="font-size:1.4rem;">🚀</span>
-          <div class="sb-text">
-            <span style="font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); display:block;">
-              Launching Soon
-            </span>
-            <span class="btm">Date TBA • 2025</span>
-          </div>
-        </div>
-      </div>
+    <h1>COMING<br>SOON</h1>
 
-      <!-- Waitlist Form -->
-      <div class="form-panel">
-        <div class="form-panel-title">Join the Waitlist</div>
-        <div class="form-panel-sub">Be the first to know when we launch. No spam, ever.</div>
-        
-        <script id="formScript6708968000003386673"
-          src="https://crm.zoho.com/crm/WebFormServeServlet?rid=0ed3da376a8b09054ce27cdc7c531f56c60e9fc5e3e5f061b2d3da6e857822b719f88b8f195ad8d458813b3f1227c3d4gid77604f6404bedfec83630f28a20378c1c3fe781a89e166ee744fce7ccf108055&script=$sYG">
-        </script>
-        
-        <p class="recap-note" style="margin-top:16px; font-size:0.55rem; color:var(--muted);">
-          Protected by reCAPTCHA — 
-          <a href="https://policies.google.com/privacy" target="_blank">Privacy</a> & 
-          <a href="https://policies.google.com/terms" target="_blank">Terms</a>
-        </p>
-      </div>
-    </main>
+    <p class="subtitle">
+      Our website is under construction — follow us for updates now!
+    </p>
 
-    <!-- FOOTER -->
-    <footer>
-      <span class="footer-copy">© 2025 VendorMart. All rights reserved.</span>
-      <nav class="footer-links">
-        <a href="#">Twitter</a>
-        <a href="#">Instagram</a>
-        <a href="#">Contact</a>
-      </nav>
-    </footer>
+    <div class="form-wrap">
+      <script id="formScript6708968000003386673"
+        src="https://crm.zoho.com/crm/WebFormServeServlet?rid=0ed3da376a8b09054ce27cdc7c531f56c60e9fc5e3e5f061b2d3da6e857822b719f88b8f195ad8d458813b3f1227c3d4gid77604f6404bedfec83630f28a20378c1c3fe781a89e166ee744fce7ccf108055&script=$sYG">
+      </script>
+
+      <p class="privacy">
+        Protected by reCAPTCHA —
+        <a href="https://policies.google.com/privacy" target="_blank">Privacy</a> &amp;
+        <a href="https://policies.google.com/terms" target="_blank">Terms</a>
+      </p>
+    </div>
+
   </div>
+
+  <p class="footer-note">© 2025 VendorMart. All rights reserved.</p>
 
   <!-- Zoho Analytics -->
   <script id="wf_anal"
     src="https://crm.zohopublic.com/crm/WebFormAnalyticsServeServlet?rid=e9cb66628b6fa35f48397a37f8892551944049259a6b4f90b8198d85de4c4714f4c6ec1e4ee2d71dbe1b57ece0515e65gid345f4332655f7d3b4d19652655c511d143d2ec55153175386c4a30d7ab2abe42gid1b44c3800d551327bacfb3625468ffbf06d6201cda7701cb2fa1a4db8ecb338fgidc47ce5ca2743217c8b1bf178775926b1f7eb62500bcee6197e035e7281ffe66e&tw=adccce2b376333c518104a836ce09ef2471112b553390f74ef0d8d10500e5ddf">
   </script>
+
 </body>
 </html>
